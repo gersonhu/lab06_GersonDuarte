@@ -9,8 +9,8 @@ import exceptions.jogo.ExceptionJogoScoreInvalido;
 
 public abstract class Jogo {
 
-	private String nome;
-	private double preco;
+	private String nomeDoJogo;
+	private double precoPrecoDoJogo;
 	private int maiorScore;
 	private int xJogadas;
 	private int xZeramentos;
@@ -20,63 +20,99 @@ public abstract class Jogo {
 		if (nome == null || nome.trim().isEmpty()) {
 			throw new ExceptionJogoNomeInvalido();
 		}
-		
+
 		if (preco < 0) {
 			throw new ExceptionJogoPrecoInvalido();
 		}
-		
+
 		if (jogabilidades == null) {
 			throw new ExceptionJogoJogabilidadeInvalida();
 		}
-		
-		this.nome = nome;
-		this.preco = preco;
+
+		this.nomeDoJogo = nome;
+		this.precoPrecoDoJogo = preco;
 		this.maiorScore = 0;
 		this.xJogadas = 0;
 		this.xZeramentos = 0;
 		this.jogabilidades = jogabilidades;
 	}
 
-	public String getNome() {
-		return this.nome;
+	public String getNomeDoJogo() {
+		return this.nomeDoJogo;
 	}
 
-	public void setNome(String novoNome) throws ExceptionJogoNomeInvalido{
-		if (nome == null || nome.trim().isEmpty()) {
+	public void setNomeDoJogo(String novoNome) throws ExceptionJogoNomeInvalido {
+		if (nomeDoJogo == null || nomeDoJogo.trim().isEmpty()) {
 			throw new ExceptionJogoNomeInvalido();
 		}
-		this.nome = novoNome;
+		this.nomeDoJogo = novoNome;
 	}
 
-	public double getPreco() {
-		return this.preco;
+	public double getPrecoDoJogo() {
+		return this.precoPrecoDoJogo;
 	}
 
-	public void setPreco(double novoPreco) throws ExceptionJogoPrecoInvalido {
-		if (preco < 0) {
+	public void setPrecoDoJogo(double novoPreco) throws ExceptionJogoPrecoInvalido {
+		if (precoPrecoDoJogo < 0) {
 			throw new ExceptionJogoPrecoInvalido();
 		}
-		this.preco = novoPreco;
+		this.precoPrecoDoJogo = novoPreco;
 	}
 
 	public int getMaiorScore() {
 		return this.maiorScore;
 	}
 
-	public void setMaiorScore(int novoScore) throws ExceptionJogoScoreInvalido{
+	public void setMaiorScore(int novoScore) throws ExceptionJogoScoreInvalido {
 		if (maiorScore < 0) {
 			throw new ExceptionJogoScoreInvalido();
 		}
 		this.maiorScore = novoScore;
 	}
-	
-	public abstract int registraJogada(int score, boolean zerou);
-	
+
 	public void incrementaXJogadas() {
 		this.xJogadas++;
 	}
-	
-	public void incrementaXZeramentos(){
+
+	public void incrementaXZeramentos() {
 		this.xZeramentos++;
+	}
+
+	public abstract int registraJogada(int score, boolean zerou);
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((jogabilidades == null) ? 0 : jogabilidades.hashCode());
+		result = prime * result + ((nomeDoJogo == null) ? 0 : nomeDoJogo.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(precoPrecoDoJogo);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Jogo))
+			return false;
+		Jogo other = (Jogo) obj;
+		if (jogabilidades == null) {
+			if (other.jogabilidades != null)
+				return false;
+		} else if (!jogabilidades.equals(other.jogabilidades))
+			return false;
+		if (nomeDoJogo == null) {
+			if (other.nomeDoJogo != null)
+				return false;
+		} else if (!nomeDoJogo.equals(other.nomeDoJogo))
+			return false;
+		if (Double.doubleToLongBits(precoPrecoDoJogo) != Double.doubleToLongBits(other.precoPrecoDoJogo))
+			return false;
+		return true;
 	}
 }
